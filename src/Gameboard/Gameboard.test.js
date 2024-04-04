@@ -1,3 +1,180 @@
-test('Hello', () => {
-  exp;
-});
+import Gameboard from "./Gameboard";
+import Ship from "../Ship/Ship";
+
+// Check if defined
+
+test('Gameboard is defined', () => {
+    expect(Gameboard).toBeDefined();
+})
+
+test('Grid property is defined', () => {
+    expect(Gameboard().grid).toBeDefined();
+})
+
+test('placeShip method is defined', () => {
+    expect(Gameboard().placeShip).toBeDefined();
+})
+
+test('receiveAttack method is defined', () => {
+    expect(Gameboard().receiveAttack).toBeDefined();
+})
+
+test('allShipsSunk method is defined', () => {
+    expect(Gameboard().allShipsSunk).toBeDefined();
+})
+
+test('ships property is defined', () => {
+    expect(Gameboard().ships).toBeDefined();
+})
+
+// Grid property
+
+describe('Gameboard grid', () => {
+    test('Grid is array', () => {
+        expect(Array.isArray(Gameboard().grid)).toBe(true);
+    })
+    
+    test('Grid length is 10', () => {
+        expect(Gameboard().grid.length).toBe(10);
+    })
+    
+    test('Grid is 2 dimensional', () => {
+        expect(Gameboard().grid[0][0]).toBeDefined();
+    })
+    
+    test('Grid has property ship that checks if there is a ship on that coordinate', () => {
+        expect(Gameboard().grid[0][0].ship).toBeDefined();
+    })
+    
+    test('Grid has property missedAttack that keeps track of missed attacks', () => {
+        expect(Gameboard().grid[0][0].missedAttack).toBeDefined();
+    })
+})
+
+// placeShip method
+
+describe('placeShip', () => {
+
+    const shipLength = 4;
+    const gameboard = Gameboard();
+
+    test('placeShip takes coordinates, ship length and adds that ship to the given coordinates', () => {
+        const coordinates = [0, 0];
+        const [row, column] = coordinates;
+        gameboard.placeShip(coordinates, shipLength);
+        expect(gameboard.grid[row][column].ship).toBeDefined();
+    });
+    
+    test('placeShip checks if ship is too long to fit on a certain coordinate', () => {
+        const coordinates = [1, 7];
+        expect(gameboard.placeShip(coordinates, shipLength)).toBe('Ship is too long');
+    })
+
+    test('placeShip checks if there is a ship on that coordinate', () => {
+        const shipLength2 = 2;
+
+        gameboard.placeShip([0, 0], shipLength);
+
+        expect(gameboard.placeShip([0, 0], shipLength2)).toBe('Ship already exists on those coordinates');
+        expect(gameboard.placeShip([0, 1], shipLength2)).toBe('Ship already exists on those coordinates');
+        expect(gameboard.placeShip([0, 2], shipLength2)).toBe('Ship already exists on those coordinates');
+        expect(gameboard.placeShip([0, 3], shipLength2)).toBe('Ship already exists on those coordinates');
+    })
+
+    test('placeShip pushes all ship to ships property', () => {
+
+        gameboard.placeShip([0, 0], shipLength);
+
+        expect(gameboard.ships[0]).toBeDefined();
+
+        gameboard.placeShip([0, 4], 3);
+
+        expect(gameboard.ships[1]).toBeDefined();
+    })
+})
+
+// receiveAttack method
+
+describe('receiveAttack', () => {
+
+    test('receiveAttack changes missedAttack to true when there is no ship on that coordinate', () => {
+        const gameboard = Gameboard();
+
+        gameboard.receiveAttack([0, 0])
+        const missedAttack = gameboard.grid[0][0].missedAttack;
+
+        expect(missedAttack).toBe(true);
+    })
+
+    test('receiveAttack sends a hit to a ship', () => {
+        const gameboard = Gameboard();
+        const coordinates = [0, 0];
+        const [row, column] = coordinates;
+        const shipLength = 3;
+
+        gameboard.placeShip(coordinates, shipLength);
+
+        gameboard.receiveAttack(coordinates);
+        const ship = gameboard.grid[row][column].ship;
+        const ship2 = gameboard.grid[row][column+1].ship;
+        const ship3 = gameboard.grid[row][column+2].ship;
+        const ship4 = gameboard.grid[row][column+3].ship;
+
+        expect(ship.hits).toBe(1);
+        expect(ship2.hits).toBe(1);
+        expect(ship3.hits).toBe(1);
+        expect(ship4).toBeFalsy();
+    })
+})
+
+describe('allShipsSunk', () => {
+    test('Returns false if ship isnt sunk', () => {
+        const gameboard = Gameboard();
+
+        const shipLength = 1;
+        gameboard.placeShip([0, 0], shipLength);
+
+        expect(gameboard.allShipsSunk()).toBe(false);
+
+    })
+
+    test('Returns true if ship is sunk', () => {
+        const gameboard = Gameboard();
+
+        const shipLength = 1;
+        gameboard.placeShip([0, 0], shipLength);
+
+        gameboard.receiveAttack([0, 0]);
+        expect(gameboard.allShipsSunk()).toBe(true);
+    })
+
+    test('Returns false if multiple ships are sunk but one is remaining', () => {
+        const gameboard = Gameboard();
+
+        const shipLength = 1;
+        gameboard.placeShip([0, 0], shipLength);
+        gameboard.placeShip([1, 0], shipLength);
+        gameboard.placeShip([2, 0], shipLength);
+
+        gameboard.receiveAttack([0, 0]);
+        gameboard.receiveAttack([1, 0]);
+
+        expect(gameboard.allShipsSunk()).toBe(false);
+    })
+
+    test('Returns true if all ships are sunk', () => {
+        const gameboard = Gameboard();
+
+        const shipLength = 1;
+        gameboard.placeShip([0, 0], shipLength);
+        gameboard.placeShip([1, 0], shipLength);
+        gameboard.placeShip([2, 0], shipLength);
+
+        gameboard.receiveAttack([0, 0]);
+        gameboard.receiveAttack([1, 0]);
+        gameboard.receiveAttack([2, 0]);
+
+        expect(gameboard.allShipsSunk()).toBe(true);
+    })
+})
+
