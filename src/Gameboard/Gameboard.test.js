@@ -27,6 +27,14 @@ test('ships property is defined', () => {
     expect(Gameboard().ships).toBeDefined();
 })
 
+test('missedAttacks property is defined', () => {
+    expect(Gameboard().missedAttacks).toBeDefined();
+})
+
+test('successfulAttacks property is defined', () => {
+    expect(Gameboard().successfulAttacks).toBeDefined();
+})
+
 // Grid property
 
 describe('Gameboard grid', () => {
@@ -104,6 +112,40 @@ describe('receiveAttack', () => {
         const missedAttack = gameboard.grid[0][0].missedAttack;
 
         expect(missedAttack).toBe(true);
+    })
+
+    test('receiveAttack changes missedAttack to false when a ship is hit', () => {
+        const gameboard = Gameboard();
+        const coordinates = [0, 0];
+        const [row, column] = coordinates;
+        const shipLength = 3;
+
+        gameboard.placeShip(coordinates, shipLength);
+
+        gameboard.receiveAttack(coordinates);
+
+        expect(gameboard.grid[row][column].missedAttack).toBe(false);
+    })
+
+    test('Each missed attack coordinates are added to missedAttacks property', () => {
+        const gameboard = Gameboard();
+
+        gameboard.receiveAttack([0, 0])
+        
+        expect(Array.isArray(gameboard.missedAttacks[0])).toBe(true)
+    })
+
+    test('Each successful attack of a ship is added to successfulAttacks property', () => {
+        const gameboard = Gameboard();
+        const coordinates = [0, 0];
+        const [row, column] = coordinates;
+        const shipLength = 3;
+
+        gameboard.placeShip(coordinates, shipLength);
+
+        gameboard.receiveAttack(coordinates);
+
+        expect(Array.isArray(gameboard.successfulAttacks[0])).toBe(true);
     })
 
     test('receiveAttack sends a hit to a ship', () => {

@@ -11,7 +11,7 @@ export default function Gameboard() {
             for(let j = 0; j < gridSize; j++) {
                 grid[i][j] = {
                     ship: null,
-                    missedAttack: false,
+                    missedAttack: null,
                 };
             }
         }
@@ -41,6 +41,8 @@ export default function Gameboard() {
     return {
         grid: createGrid(),
         ships: [],
+        missedAttacks: [],
+        successfulAttacks: [],
         placeShip(coordinates, shipLength) {
             const maxSize = 9;
             const [row, column] = coordinates;
@@ -69,10 +71,19 @@ export default function Gameboard() {
             const [row, column] = coordinates;
 
             if(!checkShipOnCoordinates(myGrid, coordinates)) {
+                // Add coordinates of the missed attack to missedAttacks property
+                this.missedAttacks.push(coordinates);
+
                 // Change missedAttack property to true
                 return myGrid[row][column].missedAttack = true;
             } 
             
+            // Change missedAttack property to false
+            myGrid[row][column].missedAttack = false;
+
+            // Add coordintates of successful attack to successfulAttacks property
+            this.successfulAttacks.push(coordinates);
+
             return myGrid[row][column].ship.hit();
         },
         allShipsSunk() {
