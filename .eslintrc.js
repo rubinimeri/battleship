@@ -27,5 +27,8 @@ module.exports = {
     'import/no-cycle': 0,
     'no-param-reassign': 0,
     'no-underscore-dangle': 0,
+    'no-undef': 0,
+    'no-shadow': 0,
+    'no-plusplus': 0,
   },
 };

@@ -1,101 +1,101 @@
-import Ship from "../Ship/Ship";
+import Ship from '../Ship/Ship';
 
 export default function Gameboard() {
-    // Create Grid
-    function createGrid() {
-        let grid = [];
-        const gridSize = 10;
-    
-        for(let i = 0; i < gridSize; i++) {
-            grid[i] = [];
-            for(let j = 0; j < gridSize; j++) {
-                grid[i][j] = {
-                    ship: null,
-                    missedAttack: null,
-                };
-            }
-        }
-        return grid;
+  // Create Grid
+  function createGrid() {
+    const grid = [];
+    const gridSize = 10;
+
+    for (let i = 0; i < gridSize; i++) {
+      grid[i] = [];
+      for (let j = 0; j < gridSize; j++) {
+        grid[i][j] = {
+          ship: null,
+          missedAttack: null,
+        };
+      }
     }
-    
-    // Check if there is already a ship on some coordinates
-    function checkShipOnCoordinates(grid, coordinates, shipLength) {
-        const myGrid = grid;
-        const [row, column] = coordinates;
-        const myShipLength = shipLength;
-        const length = column + myShipLength;
+    return grid;
+  }
 
-        // If shipLength is not given, check ship only on the given coordinates
-        // if ship exists then return true, else return false
-        if(shipLength === undefined && myGrid[row][column].ship) return true;
+  // Check if there is already a ship on some coordinates
+  function checkShipOnCoordinates(grid, coordinates, shipLength) {
+    const myGrid = grid;
+    const [row, column] = coordinates;
+    const myShipLength = shipLength;
+    const length = column + myShipLength;
 
-        else if(shipLength === undefined && !myGrid[row][column].ship) return false;
+    // If shipLength is not given, check ship only on the given coordinates
+    // if ship exists then return true, else return false
+    if (shipLength === undefined && myGrid[row][column].ship) return true;
 
-        for(let i = column; i < length; i++) {
-            if(myGrid[row][i].ship) return true;
-        }
+    if (shipLength === undefined && !myGrid[row][column].ship) return false;
 
-        return false;
+    for (let i = column; i < length; i++) {
+      if (myGrid[row][i].ship) return true;
     }
 
-    return {
-        grid: createGrid(),
-        ships: [],
-        missedAttacks: [],
-        successfulAttacks: [],
-        placeShip(coordinates, shipLength) {
-            const maxSize = 9;
-            const [row, column] = coordinates;
+    return false;
+  }
 
-            // Check if coordinates are valid
-            if(column + shipLength - 1 > maxSize || row > maxSize || column > maxSize) return 'Ship is too long';
+  return {
+    grid: createGrid(),
+    ships: [],
+    missedAttacks: [],
+    successfulAttacks: [],
+    placeShip(coordinates, shipLength) {
+      const maxSize = 9;
+      const [row, column] = coordinates;
 
-            // Check if there is already a ship on these coordinates + shipLength
-            if(checkShipOnCoordinates(this.grid, coordinates, shipLength)) return 'Ship already exists on those coordinates';
+      // Check if coordinates are valid
+      if (column + shipLength - 1 > maxSize || row > maxSize || column > maxSize) return 'Ship is too long';
 
-            // Create new Ship object
-            const newShip = Ship(shipLength);
+      // Check if there is already a ship on these coordinates + shipLength
+      if (checkShipOnCoordinates(this.grid, coordinates, shipLength)) return 'Ship already exists on those coordinates';
 
-            // Push newShip to ships property
-            this.ships.push(newShip);
+      // Create new Ship object
+      const newShip = Ship(shipLength);
 
-            // Place ship on coordinates
-            for(let i = column; i < column + shipLength; i++) {
-                this.grid[row][i].ship = newShip;
-            }
-            return this.grid;
-        },
-        receiveAttack(coordinates) {
+      // Push newShip to ships property
+      this.ships.push(newShip);
 
-            const myGrid = this.grid;
-            const [row, column] = coordinates;
+      // Place ship on coordinates
+      for (let i = column; i < column + shipLength; i++) {
+        this.grid[row][i].ship = newShip;
+      }
+      return this.grid;
+    },
+    receiveAttack(coordinates) {
+      const myGrid = this.grid;
+      const [row, column] = coordinates;
 
-            if(!checkShipOnCoordinates(myGrid, coordinates)) {
-                // Add coordinates of the missed attack to missedAttacks property
-                this.missedAttacks.push(coordinates);
+      if (!checkShipOnCoordinates(myGrid, coordinates)) {
+        // Add coordinates of the missed attack to missedAttacks property
+        this.missedAttacks.push(coordinates);
 
-                // Change missedAttack property to true
-                return myGrid[row][column].missedAttack = true;
-            } 
-            
-            // Change missedAttack property to false
-            myGrid[row][column].missedAttack = false;
+        // Change missedAttack property to true
+        myGrid[row][column].missedAttack = true;
+        return;
+      }
 
-            // Add coordintates of successful attack to successfulAttacks property
-            this.successfulAttacks.push(coordinates);
+      // Change missedAttack property to false
+      myGrid[row][column].missedAttack = false;
 
-            return myGrid[row][column].ship.hit();
-        },
-        allShipsSunk() {
-            const myShips = this.ships;
+      // Add coordintates of successful attack to successfulAttacks property
+      this.successfulAttacks.push(coordinates);
 
-            // If a ship isnt sunk then return false
-            for (const ship of myShips) {
-                if(!ship.isSunk()) return false
-            }
+      myGrid[row][column].ship.hit();
+    },
+    allShipsSunk() {
+      const myShips = this.ships;
 
-            // Otherwise return true
-            return true;
-        }
-    }
+      // If a ship isnt sunk then return false
+      for (const ship of myShips) {
+        if (!ship.isSunk()) return false;
+      }
+
+      // Otherwise return true
+      return true;
+    },
+  };
 }
