@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.board {
+    margin: 20px;
+}
+
+.cell {
+    border: 1px solid;
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+}

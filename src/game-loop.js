@@ -30,4 +30,9 @@ function gameLoop() {
   gameboardTwo.placeShip([2, 5], 3);
   gameboardTwo.placeShip([0, 1], 2);
   gameboardTwo.placeShip([1, 7], 1);
+
+  console.log(playerOne);
+  console.log(playerTwo);
 }
+
+gameLoop();

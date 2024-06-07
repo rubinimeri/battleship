@@ -1,3 +1,5 @@
+import './styles/style.css';
+
 // Factory function to create cell elements
 function createCellElement() {
   const cell = document.createElement('div');
@@ -12,9 +14,16 @@ function createBoard() {
   board.classList.add('board');
   body.append(board);
 
-  for (let i = 0; i < 100; i++) {
-    const cell = createCellElement();
-    board.appendChild(cell);
+  for (let i = 0; i < 10; i++) {
+    const row = document.createElement('div');
+    row.classList.add('row');
+
+    for (let j = 0; j < 10; j++) {
+      const cell = createCellElement();
+      row.appendChild(cell);
+    }
+
+    board.append(row);
   }
 }
 
