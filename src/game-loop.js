@@ -4,6 +4,7 @@
 import Gameboard from './Gameboard/Gameboard';
 import Player from './Player/Player';
 import Computer from './Computer/Computer';
+import showPlayerShips, { showOpponentShips } from './dom-handler';
 
 function gameLoop() {
   // Create gameboards
@@ -30,6 +31,9 @@ function gameLoop() {
   gameboardTwo.placeShip([2, 5], 3);
   gameboardTwo.placeShip([0, 1], 2);
   gameboardTwo.placeShip([1, 7], 1);
+
+  showPlayerShips(gameboardOne);
+  showOpponentShips(gameboardTwo);
 
   console.log(playerOne);
   console.log(playerTwo);
