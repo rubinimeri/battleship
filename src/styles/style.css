@@ -14,3 +14,15 @@
 .row {
     display: flex;
 }
+
+.ship {
+    background-color: #492af7;
+}
+
+.successful-attack {
+    background-color: #ff6c6c;
+}
+
+.missed-attack {
+    background-color: #777777;
+}
