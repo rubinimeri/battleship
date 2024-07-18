@@ -1,6 +1,6 @@
 import Player from './Player/Player';
 
-const UI = (() => {
+export const UI = (() => {
   function checkAttacks(missedAttacks, successfulAttacks, coordinates) {
     const [row, column] = coordinates;
     if (missedAttacks.find((attack) => row === attack[0] && column === attack[1])) return false;
@@ -83,7 +83,7 @@ const UI = (() => {
     }
   }
   function startGame() {
-    const startButton = document.getElementById('start');
+    const startButton = document.querySelector('.start');
     startButton.style.display = 'none';
   }
 
