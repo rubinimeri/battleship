@@ -43,15 +43,28 @@ export default function Gameboard() {
     ships: [],
     missedAttacks: [],
     successfulAttacks: [],
+    randomizeShips() {
+      // Generate random coordinates from 0-9, ex: [0~9, 0~9]
+      function randomCoordinates() {
+        return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+      }
+
+      for (let shipSize = 1; shipSize <= 5; shipSize++) {
+        let [row, column] = randomCoordinates();
+        while (!this.placeShip([row, column + shipSize - 1], shipSize)) {
+          [row, column] = randomCoordinates();
+        }
+      }
+    },
     placeShip(coordinates, shipLength) {
       const maxSize = 9;
       const [row, column] = coordinates;
 
       // Check if coordinates are valid
-      if (column + shipLength - 1 > maxSize || row > maxSize || column > maxSize) return 'Ship is too long';
+      if (column + shipLength - 1 > maxSize || row > maxSize || column > maxSize) return false;
 
       // Check if there is already a ship on these coordinates + shipLength
-      if (checkShipOnCoordinates(this.grid, coordinates, shipLength)) return 'Ship already exists on those coordinates';
+      if (checkShipOnCoordinates(this.grid, coordinates, shipLength)) return false;
 
       // Create new Ship object
       const newShip = Ship(shipLength);
@@ -63,7 +76,7 @@ export default function Gameboard() {
       for (let i = column; i < column + shipLength; i++) {
         this.grid[row][i].ship = newShip;
       }
-      return this.grid;
+      return true;
     },
     receiveAttack(coordinates) {
       const myGrid = this.grid;

@@ -11,13 +11,9 @@ const computerGameboard = computer.gameboard;
 
 const AI = Computer();
 
-gameboard.placeShip([0, 0], 5);
-gameboard.placeShip([2, 0], 4);
-gameboard.placeShip([5, 5], 3);
-gameboard.placeShip([3, 1], 2);
-gameboard.placeShip([9, 7], 1);
+gameboard.randomizeShips();
 
-computerGameboard.placeShip([0, 0], 5);
+computerGameboard.randomizeShips();
 
 // Mock
 

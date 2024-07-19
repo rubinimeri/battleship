@@ -34,6 +34,10 @@ test('successfulAttacks property is defined', () => {
   expect(Gameboard().successfulAttacks).toBeDefined();
 });
 
+test('randomizeShips method is defined', () => {
+  expect(Gameboard().randomizeShips).toBeDefined();
+});
+
 // Grid property
 
 describe('Gameboard grid', () => {
@@ -73,7 +77,7 @@ describe('placeShip', () => {
 
   test('placeShip checks if ship is too long to fit on a certain coordinate', () => {
     const coordinates = [1, 7];
-    expect(gameboard.placeShip(coordinates, shipLength)).toBe('Ship is too long');
+    expect(gameboard.placeShip(coordinates, shipLength)).toBe(false);
   });
 
   test('placeShip checks if there is a ship on that coordinate', () => {
@@ -81,10 +85,10 @@ describe('placeShip', () => {
 
     gameboard.placeShip([0, 0], shipLength);
 
-    expect(gameboard.placeShip([0, 0], shipLength2)).toBe('Ship already exists on those coordinates');
-    expect(gameboard.placeShip([0, 1], shipLength2)).toBe('Ship already exists on those coordinates');
-    expect(gameboard.placeShip([0, 2], shipLength2)).toBe('Ship already exists on those coordinates');
-    expect(gameboard.placeShip([0, 3], shipLength2)).toBe('Ship already exists on those coordinates');
+    expect(gameboard.placeShip([0, 0], shipLength2)).toBe(false);
+    expect(gameboard.placeShip([0, 1], shipLength2)).toBe(false);
+    expect(gameboard.placeShip([0, 2], shipLength2)).toBe(false);
+    expect(gameboard.placeShip([0, 3], shipLength2)).toBe(false);
   });
 
   test('placeShip pushes all ship to ships property', () => {
@@ -212,4 +216,13 @@ describe('allShipsSunk', () => {
 
     expect(gameboard.allShipsSunk()).toBe(true);
   });
+});
+
+// randomizeShips method
+
+test('Random ship placement', () => {
+  const gameboard = Gameboard();
+
+  gameboard.randomizeShips();
+  expect(gameboard.ships.length).toBe(5);
 });
