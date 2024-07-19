@@ -26,3 +26,7 @@ body > div {
 .missed-attack {
     background-color: #777777;
 }
+
+.invisible {
+    display: none;
+}

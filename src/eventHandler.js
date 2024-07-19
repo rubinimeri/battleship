@@ -33,23 +33,24 @@ const EventHandlers = (() => {
 
     // Load new computer board
     UI.loadComputerBoard(computer);
-    if (computer.gameboard.allShipsSunk()) return console.log('Player wins');
+    if (computer.gameboard.allShipsSunk()) return UI.endGame('player');
 
     // Make computer attack player
     AI.attack(player);
 
     // Load new player board
     UI.loadPlayerBoard(player);
-    if (player.gameboard.allShipsSunk()) return console.log('Computer wins');
+    if (player.gameboard.allShipsSunk()) return UI.endGame('computer');
 
     // Add event listener to new computer board cells
     const computerBoardCells = Array.from(document.querySelectorAll('.computer .cell'));
     computerBoardCells.forEach((cell) => {
-      cell.addEventListener('click', cellAttack);
+      if (!(cell.classList.contains('successful-attack') || cell.classList.contains('missed-attack'))) cell.addEventListener('click', cellAttack);
     });
   }
   function init() {
     const startButton = document.querySelector('.start');
+    const restartButton = document.querySelector('.restart');
 
     startButton.addEventListener('click', () => {
       UI.startGame(player, computer);
@@ -58,6 +59,11 @@ const EventHandlers = (() => {
         cell.addEventListener('click', cellAttack);
       });
     });
+
+    restartButton.addEventListener('click', () => {
+      // TODO: create new mock instead of reloading
+      window.location.reload();
+    });
   }
 
   return {
@@ -65,4 +71,4 @@ const EventHandlers = (() => {
   };
 })();
 
-EventHandlers.init();
+document.addEventListener('DOMContentLoaded', EventHandlers.init());

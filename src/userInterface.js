@@ -88,11 +88,28 @@ export const UI = (() => {
     loadPlayerBoard(player);
     loadComputerBoard(computer);
   }
+  function endGame(winner) {
+    const winnerContainer = document.querySelector('.winner-container');
+    const restartButton = document.querySelector('.restart');
+
+    // Create DOM elements
+    const title = document.createElement('h1');
+    title.classList.add('winner');
+
+    winnerContainer.append(title);
+    winnerContainer.classList.remove('invisible');
+
+    restartButton.classList.remove('invisible');
+
+    if (winner === 'computer') title.textContent = 'Computer Wins!';
+    else title.textContent = 'Player Wins!';
+  }
 
   return {
     loadPlayerBoard,
     loadComputerBoard,
     startGame,
+    endGame,
   };
 })();
 
