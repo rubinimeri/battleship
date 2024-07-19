@@ -1,5 +1,4 @@
-import Player from './Player/Player';
-
+// eslint-disable-next-line import/prefer-default-export
 export const UI = (() => {
   function checkAttacks(missedAttacks, successfulAttacks, coordinates) {
     const [row, column] = coordinates;
@@ -82,9 +81,12 @@ export const UI = (() => {
       }
     }
   }
-  function startGame() {
+  function startGame(player, computer) {
     const startButton = document.querySelector('.start');
     startButton.style.display = 'none';
+
+    loadPlayerBoard(player);
+    loadComputerBoard(computer);
   }
 
   return {
@@ -94,26 +96,9 @@ export const UI = (() => {
   };
 })();
 
-const player = Player();
-const { gameboard } = player;
-
-const computer = Player();
-const computerGameboard = computer.gameboard;
-
-gameboard.placeShip([0, 0], 5);
-gameboard.placeShip([2, 0], 4);
-gameboard.placeShip([5, 5], 3);
-gameboard.placeShip([3, 1], 2);
-gameboard.placeShip([9, 7], 1);
-
-computerGameboard.placeShip([0, 0], 5);
-
-computerGameboard.receiveAttack([0, 0]);
-computerGameboard.receiveAttack([1, 0]);
-
-UI.loadPlayerBoard(player);
+/* UI.loadPlayerBoard(player);
 UI.loadComputerBoard(computer);
 
 gameboard.receiveAttack([0, 0]);
 
-UI.loadPlayerBoard(player);
+UI.loadPlayerBoard(player); */
