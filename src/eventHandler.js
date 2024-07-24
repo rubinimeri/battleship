@@ -37,28 +37,43 @@ const EventHandlers = (() => {
     // Load new player board
     UI.loadPlayerBoard(player);
     if (player.gameboard.allShipsSunk()) return UI.endGame('computer');
+    cellListener();
+  }
 
+  function cellListener() {
     // Add event listener to new computer board cells
     const computerBoardCells = Array.from(document.querySelectorAll('.computer .cell'));
     computerBoardCells.forEach((cell) => {
       if (!(cell.classList.contains('successful-attack') || cell.classList.contains('missed-attack'))) cell.addEventListener('click', cellAttack);
     });
   }
-  function init() {
+  function init(player, computer) {
+    UI.loadPlayerBoard(player);
+    UI.loadComputerBoard(computer);
+
     const startButton = document.querySelector('.start');
     const restartButton = document.querySelector('.restart');
+    const randomizeButton = document.querySelector('.randomize');
 
     startButton.addEventListener('click', () => {
-      UI.startGame(player, computer);
-      const computerBoardCells = Array.from(document.querySelectorAll('.computer .cell'));
-      computerBoardCells.forEach((cell) => {
-        cell.addEventListener('click', cellAttack);
-      });
+      UI.startGame();
+      cellListener();
     });
 
     restartButton.addEventListener('click', () => {
       // TODO: create new mock instead of reloading
       window.location.reload();
+    });
+
+    randomizeButton.addEventListener('click', () => {
+      gameboard.removeShips();
+      computerGameboard.removeShips();
+      gameboard.randomizeShips();
+      computerGameboard.randomizeShips();
+
+      UI.loadPlayerBoard(player);
+      UI.loadComputerBoard(computer);
+      cellListener();
     });
   }
 
@@ -67,4 +82,6 @@ const EventHandlers = (() => {
   };
 })();
 
-document.addEventListener('DOMContentLoaded', EventHandlers.init());
+document.addEventListener('DOMContentLoaded', () => {
+  EventHandlers.init(player, computer);
+});

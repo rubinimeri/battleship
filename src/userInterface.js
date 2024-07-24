@@ -1,3 +1,5 @@
+import { EventHandlers } from './eventHandler';
+
 // eslint-disable-next-line import/prefer-default-export
 export const UI = (() => {
   function checkAttacks(missedAttacks, successfulAttacks, coordinates) {
@@ -81,16 +83,16 @@ export const UI = (() => {
       }
     }
   }
-  function startGame(player, computer) {
+  function startGame() {
     const startButton = document.querySelector('.start');
+    const randomizeButton = document.querySelector('.randomize');
+    const restartButton = document.querySelector('.restart');
     startButton.style.display = 'none';
-
-    loadPlayerBoard(player);
-    loadComputerBoard(computer);
+    randomizeButton.style.display = 'none';
+    restartButton.classList.remove('invisible');
   }
   function endGame(winner) {
     const winnerContainer = document.querySelector('.winner-container');
-    const restartButton = document.querySelector('.restart');
 
     // Create DOM elements
     const title = document.createElement('h1');
@@ -98,8 +100,6 @@ export const UI = (() => {
 
     winnerContainer.append(title);
     winnerContainer.classList.remove('invisible');
-
-    restartButton.classList.remove('invisible');
 
     if (winner === 'computer') title.textContent = 'Computer Wins!';
     else title.textContent = 'Player Wins!';
@@ -112,10 +112,3 @@ export const UI = (() => {
     endGame,
   };
 })();
-
-/* UI.loadPlayerBoard(player);
-UI.loadComputerBoard(computer);
-
-gameboard.receiveAttack([0, 0]);
-
-UI.loadPlayerBoard(player); */

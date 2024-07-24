@@ -38,6 +38,10 @@ test('randomizeShips method is defined', () => {
   expect(Gameboard().randomizeShips).toBeDefined();
 });
 
+test('removeShips method is defined', () => {
+  expect(Gameboard().removeShips).toBeDefined();
+});
+
 // Grid property
 
 describe('Gameboard grid', () => {
@@ -225,4 +229,21 @@ test('Random ship placement', () => {
 
   gameboard.randomizeShips();
   expect(gameboard.ships.length).toBe(5);
+});
+
+// removeShips method
+
+test('Removes all ships from grid', () => {
+  const gameboard = Gameboard();
+
+  gameboard.randomizeShips();
+  gameboard.removeShips();
+
+  expect(gameboard.ships.length).toBe(0);
+
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      expect(gameboard.grid[i][j].ship).toBe(null);
+    }
+  }
 });

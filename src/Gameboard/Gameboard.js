@@ -43,15 +43,24 @@ export default function Gameboard() {
     ships: [],
     missedAttacks: [],
     successfulAttacks: [],
+    removeShips() {
+      this.ships = [];
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          this.grid[i][j].ship = null;
+        }
+      }
+    },
     randomizeShips() {
       // Generate random coordinates from 0-9, ex: [0~9, 0~9]
       function randomCoordinates() {
         return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
       }
 
-      for (let shipSize = 1; shipSize <= 5; shipSize++) {
+      const ships = [1, 1, 1, 2, 2, 2, 3, 3, 4, 5];
+      for (let i = 0; i < ships.length; i++) {
         let [row, column] = randomCoordinates();
-        while (!this.placeShip([row, column + shipSize - 1], shipSize)) {
+        while (!this.placeShip([row, column], ships[i])) {
           [row, column] = randomCoordinates();
         }
       }

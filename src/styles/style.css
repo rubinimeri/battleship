@@ -1,14 +1,44 @@
 * {
     margin: 0;
     padding: 0;
+    /* border: 1px solid; */
 }
-body > div {
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.board-container {
+    min-height: 70vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.player,
+.computer {
     margin: 20px;
+    border: 1px solid;
 }
 
 .cell {
     border: 1px solid;
     padding: 20px;
+}
+
+.faded,
+.faded .cell{
+    border: 1px solid lightgray;
+}
+
+.computer .cell:hover {
+    border: 1px solid skyblue;
 }
 
 .row {
@@ -29,4 +59,14 @@ body > div {
 
 .invisible {
     display: none;
+}
+
+.randomize {
+    flex-grow: 0;
+}
+
+.start-randomize {
+    flex-shrink: 5;
+    display: flex;
+    flex-direction: column;
 }
